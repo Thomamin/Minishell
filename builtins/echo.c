@@ -11,17 +11,17 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include "minishell.h"
+#include "../minishell.h"
 
-int	mini_echo(t_command *cmd)
+int	mini_echo(t_cmd_info *cmd)
 {
 	int	i;
 
-	i = 0;
-	while (cmd->arguments[i] != NULL)
+	i = 1;
+	while (cmd->cmd_and_av[i])
 	{
-		printf(cmd->arguments[i]);
-		if (cmd->arguments[i + 1] != NULL)
+		printf(cmd->cmd_and_av[i]);
+		if (cmd->cmd_and_av[i + 1])
 			printf(" ");
 		i++;
 	}

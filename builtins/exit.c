@@ -1,12 +1,14 @@
 
-int mini_exit(t_command *cmd)
+#include "../minishell.h"
+
+int mini_exit(t_cmd_info *cmd)
 {
-	if (cmd->arguments갯수 > 2)
+	if (cmd_and_av_cnt(cmd->cmd_and_av) > 2)
 	{
 		printstderr("exit: too many arguments\n");
 		return (1);
 	}
-	if (!is_number(cmd->arguments[0]))
+	if (!is_number(cmd->cmd_and_av[1]))
 	{
 		printstderr("exit: %s: numeric argument required");
 		return (1);
