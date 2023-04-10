@@ -20,16 +20,16 @@ void print_checker(t_cmd_info *cmd, t_info_env *env)
 		}
 		cur = cur->next;
 	}
-	env_cur = env;
+	// env_cur = env;
 	
-	while (env_cur)
-	{
-		if (!ft_strcmp(env_cur->env_key, "USER") && env_cur->env_val)
-		{
-				printf("env_key == %s\n", env_cur->env_key);
-				printf("env_val == %s\n", env_cur->env_val);
-				printf("----------------------------------\n");
-		}
-		env_cur = env_cur->next;
-	}
+	// while (env_cur)
+	// {
+	// 	if (!ft_strcmp(env_cur->env_key, "USER") && env_cur->env_val)
+	// 	{
+	// 			printf("env_key == %s\n", env_cur->env_key);
+	// 			printf("env_val == %s\n", env_cur->env_val);
+	// 			printf("----------------------------------\n");
+	// 	}
+	// 	env_cur = env_cur->next;
+	// }
 }
