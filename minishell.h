@@ -44,7 +44,7 @@ typedef struct s_cmd_info
 	int					fd[2]; 
 	int					ft_in_files; 
 	int					ft_out_files; 
-	char				*ft_command_path; 
+	char				*ft_command_path;
 	struct s_cmd_info	*prev; 
 	struct s_cmd_info	*next; 
 }						t_cmd_info; 
@@ -133,8 +133,11 @@ t_info_env	*compare_env_key(t_info_env *env_head, char *key);
 char		*get_env_value(char *key_value);
 char		*get_env_key(char *key_value);
 
-char	*ft_getenv(t_info_env *env_head, char *key);
+char		*ft_getenv(t_info_env *env_head, char *key);
 
+
+int			cmd_and_av_cnt(char **cmd_and_av);
+void		printstderr(char *str);
 
 #endif
 
