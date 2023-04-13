@@ -1,31 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/08 12:27:30 by dmin              #+#    #+#             */
-/*   Updated: 2023/04/08 12:27:34 by dmin             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+//cd.c
 
 #include "../minishell.h"
-
-int	cmd_and_av_cnt(char **cmd_and_av)
-{
-	int	cnt;
-
-	cnt = 0;
-	while (cmd_and_av[cnt])
-		cnt++;
-	return cnt;
-}
-
-void printstderr(char *str)
-{
-	write(2, str, ft_strlen(str));
-}
 
 int	change_dir(char *path)
 {
