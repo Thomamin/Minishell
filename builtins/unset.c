@@ -23,6 +23,8 @@ int mini_unset(t_cmd_info *cmd, t_env_info *env)
 		if(temp)
 		{ //delete the variable node and free the node
 			temp->prev->next = temp->next;
+			free(temp->env_key);
+			free(temp->env_val);
 			free(temp);
 		}
 		i++;

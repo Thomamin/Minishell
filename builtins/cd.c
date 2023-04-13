@@ -2,16 +2,21 @@
 
 #include "../minishell.h"
 
-int	change_dir(char *path)
+int	change_dir(char *path, t_env_info *env)
 {
 	// chdir시 path가 유효하지 않을 경우 처리하는 함수
 	// if chdir fails, print out error message referring errono
-	if (chdir(path) == -1) 
+	int ret;
+
+	ret = chdir(path);
+	if (ret == 0)
 	{
-		perror("cd");
-		return (-1);
+		ft_setenv(env, "OLDPWD", ft_getenv(env, "PWD"));
+		ft_setenv(env, "PWD", path);
 	}
-	return (0);
+	else if (ret == -1) 
+		perror("cd");
+	return (ret);
 }
 
 int	mini_cd(t_cmd_info *cmd, t_env_info *env)
@@ -19,7 +24,7 @@ int	mini_cd(t_cmd_info *cmd, t_env_info *env)
 	char	*path;
 	char	*oldpwd;
 
-	if (cmd_and_av_cnt(cmd->cmd_and_av) > 3) 	//argument가 2개 이상인 경우
+	if (cmd_and_av_cnt(cmd->cmd_and_av) > 2) 	//argument가 2개 이상인 경우
 	{
 		printstderr("cd: too many arguments\n");
 		return (1);
@@ -32,19 +37,32 @@ int	mini_cd(t_cmd_info *cmd, t_env_info *env)
 			printstderr("HOME not set\n");
 			return (1);
 		}
-		return (change_dir(path)); // chdir시 path가 유효하지 않을 경우 처리하는 함수 필요
+		return (change_dir(path, env)); // chdir시 path가 유효하지 않을 경우 처리하는 함수 필요
 	}
 	path = cmd->cmd_and_av[1]; 	// argument 한개인 경우 해당 path로
-	if (ft_strncmp(path, "-", ft_strlen(path))) //cd에만 해당하는 metacharacter이므로 cd에서 처리
+	if (!ft_strncmp(path, "-", ft_strlen(path))) //cd에만 해당하는 metacharacter이므로 cd에서 처리
 	{
-		oldpwd = ft_getenv(env, "OLDPWD");
-		if (!oldpwd)
+		path = ft_getenv(env, "OLDPWD");
+		if (!path)
 		{
 			printstderr("cd: OLDPWD not set");
 			return (1);
 		}
-		printf("%s\n", oldpwd); // oldpwd 절대경로 print
-		path = oldpwd;
+		printf("%s\n", path); // oldpwd 절대경로 print
 	}
-	return (change_dir(path));
+	else if (!ft_strncmp(path, "~", ft_strlen(path))) //cd에만 해당하는 metacharacter이므로 cd에서 처리
+	{
+		path = ft_getenv(env, "HOME");
+		if (!path)
+		{
+			printstderr("cd: HOME not set");
+			return (1);
+		}
+	}
+	else
+	{	
+		path = ft_strjoin("/", path);
+		path = ft_strjoin(ft_getenv(env, "PWD"), path);
+	}
+	return (change_dir(path, env));
 }
