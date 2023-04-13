@@ -3,9 +3,9 @@
 
 #include "../minishell.h"
 
-int mini_env(t_cmd_info *cmd, t_info_env *env)
+int mini_env(t_cmd_info *cmd, t_env_info *env)
 {
-	t_info_env *temp;
+	t_env_info *temp;
 
 	(void) cmd; //subject에서 no option, no argument라고 했으나 입력한 경우 error msg출력할지?
 	

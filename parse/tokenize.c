@@ -6,13 +6,13 @@
 /*   By: shane <shane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 13:54:59 by youngjpa          #+#    #+#             */
-/*   Updated: 2023/04/10 11:38:46 by shane            ###   ########.fr       */
+/*   Updated: 2023/04/11 13:53:34 by shane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*ft_tokenize_while_dollar(char str, char *new, t_info_env *head, int quotes)
+static char	*ft_tokenize_while_dollar(char str, char *new, t_env_info *head, int quotes)
 {
 	static char	*env;
 
@@ -63,7 +63,7 @@ static int	dollar_check(char c)
 		return (0);
 }
 
-static char	*ft_tokenize_while(t_cmd_info *cmd, t_info_env *head, int i)
+static char	*ft_tokenize_while(t_cmd_info *cmd, t_env_info *head, int i)
 {
 	char	*new;
 	int		j;
@@ -91,7 +91,7 @@ static char	*ft_tokenize_while(t_cmd_info *cmd, t_info_env *head, int i)
 	return (new);
 }
 
-void	ft_tokenize(t_cmd_info *cmd, t_info_env *info_env)
+void	ft_tokenize(t_cmd_info *cmd, t_env_info *info_env)
 {
 	char	*new;
 	int		i;

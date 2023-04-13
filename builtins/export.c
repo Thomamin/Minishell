@@ -2,9 +2,9 @@
 
 #include "../minishell.h"
 
-void	ft_swap_elements(t_info_env *el_a, t_info_env *el_b)
+void	ft_swap_elements(t_info_env *el_a, t_env_info *el_b)
 {
-	t_info_env tmp;
+	t_env_info tmp;
 	
 	tmp.env_val = el_a->env_val;
 	tmp.env_key = el_a->env_key;

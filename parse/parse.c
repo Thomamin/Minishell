@@ -6,7 +6,7 @@
 /*   By: shane <shane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 13:44:06 by youngjpa          #+#    #+#             */
-/*   Updated: 2023/04/10 11:17:33 by shane            ###   ########.fr       */
+/*   Updated: 2023/04/13 14:47:29 by shane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ static char	*add_redirect_space(char *str, char *input, char c)
 	{
 		input--;
 		if (!(*input == '>' || *input == ' '))
-		{
 			str = ft_join_ascii(str, ' ');
-		}
 		input++;
 		str = ft_join_ascii(str, -62);
 		input++;

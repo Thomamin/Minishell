@@ -2,7 +2,7 @@
 
 #include "../minishell.h"
 
-int	mini_pwd(t_cmd_info *cmd, t_info_env *env)
+int	mini_pwd(t_cmd_info *cmd, t_env_info *env)
 {
 	(void) cmd;
 	(void) env;
