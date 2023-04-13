@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_open_check.c                                  :+:      :+:    :+:   */
+/*   close_unused_fd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shane <shane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: youngjpa <youngjpa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/07 14:01:26 by youngjpa          #+#    #+#             */
-/*   Updated: 2023/04/13 14:48:14 by shane            ###   ########.fr       */
+/*   Created: 2023/04/12 14:00:35 by youngjpa          #+#    #+#             */
+/*   Updated: 2023/04/12 14:02:57 by youngjpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	is_exist_file(char *tmp_file_name)
+void	close_unused_fd(t_cmd_info *cmd, pid_t pid)
 {
-	int	fd;
-
-	fd = open(tmp_file_name, O_RDONLY);
-	close(fd);
-	if (fd == -1)
-		return (0);
+	if (pid == 0)
+	{
+		if (cmd->fd[READ] != -2)
+			cmd->fd[READ] = ft_close(cmd->fd[READ]);
+	}
 	else
-		return (1);
+	{
+		if (cmd->fd[WRITE] != -2)
+			cmd->fd[WRITE] = ft_close(cmd->fd[WRITE]);
+	}
+	return ;
 }

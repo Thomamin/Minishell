@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: shane <shane@student.42.fr>                +#+  +:+       +#+         #
+#    By: yuhyeongmin <yuhyeongmin@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/07 13:03:55 by youngjpa          #+#    #+#              #
-#    Updated: 2023/04/10 11:39:22 by shane            ###   ########.fr        #
+#    Updated: 2023/04/13 15:08:01 by yuhyeongmin      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,15 +32,33 @@ SRCS		=	minishell.c				 \
 				./utilites/utils4.c \
 				./utilites/utils5.c \
 				./env/env_utils.c	\
-				./env/env_utils2.c
+				./env/env_utils2.c	\
+				./execute/execute.c	\
+				./execute/check_valid_syntex.c\
+				./execute/close_unused_fd.c\
+				./execute/execute_utils.c\
+				./execute/heredoc.c\
+				./execute/init_and_clear_cmd.c\
+				./execute/io_file_open.c\
+				./execute/path.c\
+				./execute/redirection.c\
+				./execute/tmp_file.c\
+				./execute/wait_child.c\
+				./builtins/builtins_utils.c\
+				./builtins/cd.c\
+				./builtins/echo.c\
+				./builtins/env.c\
+				./builtins/exit.c\
+				./builtins/pwd.c\
+				./builtins/unset.c\
 
 OBJS		= $(SRCS:%.c=%.o)
 
-CC = gcc $(DEBUG)
+SAN = -fsanitize=address -g3
+DEBUG = -g
+CC = gcc $(DEBUG) $(SAN)
 CFLAGS = 
 #-Werror -Wall -Wextra
-# SAN = -fsanitize=address -g3
-DEBUG = -g
 READLINE_LIB 	= -lreadline -L/opt/homebrew/opt/readline/lib
 READLINE_INC	= -I/opt/homebrew/opt/readline/include
 # READLINE_LIB 	= -lreadline -L${HOME}/.brew/opt/readline/lib

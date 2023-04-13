@@ -6,7 +6,7 @@
 /*   By: yuhyeongmin <yuhyeongmin@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 13:03:41 by youngjpa          #+#    #+#             */
-/*   Updated: 2023/04/10 13:48:23 by yuhyeongmin      ###   ########.fr       */
+/*   Updated: 2023/04/12 15:07:52 by yuhyeongmin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **envp)
 	struct termios		term_sig;
 	char				*input;
 	t_cmd_info			*cmd;
-	t_info_env			info_env;
+	t_env_info			info_env;
 
 	tcgetattr(STDIN_FILENO, &term_sig); 
 	ft_main_init(argc, argv);
@@ -50,7 +50,8 @@ int	main(int argc, char **argv, char **envp)
 			ft_parse(input, cmd);
 			ft_tokenize(cmd, &info_env);
 			ft_arg_check(&cmd);
-			print_checker(cmd, &info_env);
+			execute(cmd, &info_env);
+			// print_checker(cmd, &info_env);
 			ft_free_list(cmd);
 		}
 		free(input);
