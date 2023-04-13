@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_open_check.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyyoo <hyyoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shane <shane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 14:01:26 by youngjpa          #+#    #+#             */
-/*   Updated: 2023/04/08 14:30:42 by hyyoo            ###   ########.fr       */
+/*   Updated: 2023/04/13 14:48:14 by shane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,7 @@ int	is_exist_file(char *tmp_file_name)
 	fd = open(tmp_file_name, O_RDONLY);
 	close(fd);
 	if (fd == -1)
-	{
 		return (0);
-	}
 	else
-	{
 		return (1);
-	}
 }

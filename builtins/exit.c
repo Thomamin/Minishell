@@ -2,13 +2,14 @@
 
 #include "../minishell.h"
 
-int mini_exit(t_cmd_info *cmd)
+int mini_exit(t_cmd_info *cmd, t_env_info *env)
 {
 	int		i;
 	int		ret;
 
 	i = 0;
 	ret = 0;
+  (void) env;
 	if (cmd_and_av_cnt(cmd->cmd_and_av) > 2)
 	{
 		printstderr("exit: too many arguments\n");

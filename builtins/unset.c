@@ -2,9 +2,9 @@
 
 #include "../minishell.h"
 
-int mini_unset(t_cmd_info *cmd, t_info_env *env)
+int mini_unset(t_cmd_info *cmd, t_env_info *env)
 {
-	t_info_env	*temp;
+	t_env_info	*temp;
 	char		*key;
 	int			i;
 	

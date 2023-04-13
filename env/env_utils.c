@@ -6,7 +6,7 @@
 /*   By: yuhyeongmin <yuhyeongmin@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:16:32 by hyyoo             #+#    #+#             */
-/*   Updated: 2023/04/08 15:29:37 by yuhyeongmin      ###   ########.fr       */
+/*   Updated: 2023/04/13 15:59:34 by yuhyeongmin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ char	*get_env_value(char *key_value)
 	return (temp);
 }
 
-t_info_env	*compare_env_key(t_info_env *env_head, char *key)
+t_env_info	*compare_env_key(t_env_info *env_head, char *key)
 {
-	t_info_env	*temp;
+	t_env_info	*temp;
 
 	temp = env_head;
 	// while (cur->key != 0 && ft_strncmp(key, cur->key, ft_strlen(cur->key)))
@@ -78,11 +78,11 @@ t_info_env	*compare_env_key(t_info_env *env_head, char *key)
 	return (temp);
 }
 
-t_info_env	*new_env(char *key_value)
+t_env_info	*new_env(char *key_value)
 {
-	t_info_env	*temp;
+	t_env_info	*temp;
 
-	temp = (t_info_env *)ft_malloc(sizeof(t_info_env), 1);
+	temp = (t_env_info *)ft_malloc(sizeof(t_env_info), 1);
 	if (key_value == NULL)
 	{
 		temp->next = NULL;
@@ -104,10 +104,10 @@ t_info_env	*new_env(char *key_value)
 	return (temp);
 }
 
-int	ft_env_init(t_info_env *cur, char **envp)
+int	ft_env_init(t_env_info *cur, char **envp)
 {
 	size_t	i;
-	t_info_env	*temp;
+	t_env_info	*temp;
 
 	i = 0;
 	cur->env_key = get_env_key(envp[1]);

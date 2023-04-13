@@ -14,7 +14,7 @@ int	change_dir(char *path)
 	return (0);
 }
 
-int	mini_cd(t_cmd_info *cmd, t_info_env *env)
+int	mini_cd(t_cmd_info *cmd, t_env_info *env)
 {
 	char	*path;
 	char	*oldpwd;
