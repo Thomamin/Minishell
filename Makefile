@@ -12,37 +12,46 @@
 
 NAME = minishell
 
-SRCS		=	minishell.c				 \
-				testforder.c			 \
-				./parse/arg_check.c 	 \
-				./parse/ft_split_arg.c   \
-				./parse/join_string.c    \
-				./parse/parse.c 		 \
-				./parse/quotes_setting.c \
-				./parse/tokenize_util.c  \
-				./parse/tokenize.c		 \
-				./utilites/exit_errono.c \
-				./utilites/file_open_check.c\
-				./utilites/init_and_free.c \
-				./utilites/signal_handle.c \
-				./utilites/systemcall2.c \
-				./utilites/utils1.c \
-				./utilites/utils2.c \
-				./utilites/utils3.c \
-				./utilites/utils4.c \
-				./utilites/utils5.c \
-				./env/env_utils.c	\
-				./env/env_utils2.c
+SRCS		=	minishell.c	\
+testforder.c			 \
+./parse/arg_check.c 	 \
+./parse/ft_split_arg.c   \
+./parse/join_string.c    \
+./parse/parse.c 		 \
+./parse/quotes_setting.c \
+./parse/tokenize_util.c  \
+./parse/tokenize.c		 \
+./utilites/exit_errono.c \
+./utilites/file_open_check.c \
+./utilites/init_and_free.c \
+./utilites/signal_handle.c \
+./utilites/systemcall2.c \
+./utilites/utils1.c \
+./utilites/utils2.c \
+./utilites/utils3.c \
+./utilites/utils4.c \
+./utilites/utils5.c \
+./env/env_utils.c	\
+./env/env_utils2.c  \
+./builtins/cd.c		\
+./builtins/echo.c	\
+./builtins/env.c	\
+./builtins/exit.c	\
+./builtins/export.c	\
+./builtins/pwd.c	\
+./builtins/unset.c	\
+./builtins/builtins_utils.c
 
 OBJS		= $(SRCS:%.c=%.o)
 
 CC = gcc $(DEBUG)
-CFLAGS = 
-#-Werror -Wall -Wextra
+CFLAGS = #-Werror -Wall -Wextra
 # SAN = -fsanitize=address -g3
 DEBUG = -g
-READLINE_LIB 	= -lreadline -L/opt/homebrew/opt/readline/lib
-READLINE_INC	= -I/opt/homebrew/opt/readline/include
+READLINE_LIB 	= -lreadline -L${HOME}/goinfre/.brew/opt/readline/lib
+READLINE_INC	= -I${HOME}/goinfre/.brew/opt/readline/include
+#READLINE_LIB 	= -lreadline -L/opt/homebrew/opt/readline/lib
+#READLINE_INC	= -I/opt/homebrew/opt/readline/include
 # READLINE_LIB 	= -lreadline -L${HOME}/.brew/opt/readline/lib
 # READLINE_INC	= -I${HOME}/.brew/opt/readline/include
 
