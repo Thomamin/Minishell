@@ -185,6 +185,9 @@ int	mini_pwd(t_cmd_info *cmd, t_env_info *env);
 int mini_unset(t_cmd_info *cmd, t_env_info *env);
 
 
+int			cmd_and_av_cnt(char **cmd_and_av);
+void		printstderr(char *str);
+int			ft_is_valid_identifier(char *identifier);
 
 #endif
 

@@ -18,6 +18,5 @@ int	mini_echo(t_cmd_info *cmd, t_env_info *env)
 	printf("\n");
 	return (0);
 }
-
 //리다이렉션 처리.
 //환경변수
