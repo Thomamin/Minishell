@@ -138,6 +138,7 @@ char		*ft_getenv(t_info_env *env_head, char *key);
 
 int			cmd_and_av_cnt(char **cmd_and_av);
 void		printstderr(char *str);
+int			ft_is_valid_identifier(char *identifier);
 
 #endif
 

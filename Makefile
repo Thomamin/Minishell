@@ -39,7 +39,8 @@ testforder.c			 \
 ./builtins/exit.c	\
 ./builtins/export.c	\
 ./builtins/pwd.c	\
-./builtins/unset.c
+./builtins/unset.c	\
+./builtins/builtins_utils.c
 
 OBJS		= $(SRCS:%.c=%.o)
 
@@ -47,8 +48,8 @@ CC = gcc $(DEBUG)
 CFLAGS = #-Werror -Wall -Wextra
 # SAN = -fsanitize=address -g3
 DEBUG = -g
-READLINE_LIB 	= -lreadline -L/goinfre/dmin/.brew/opt/readline/lib
-READLINE_INC	= -I/goinfre/dmin/.brew/opt/readline/include
+READLINE_LIB 	= -lreadline -L${HOME}/goinfre/.brew/opt/readline/lib
+READLINE_INC	= -I${HOME}/goinfre/.brew/opt/readline/include
 #READLINE_LIB 	= -lreadline -L/opt/homebrew/opt/readline/lib
 #READLINE_INC	= -I/opt/homebrew/opt/readline/include
 # READLINE_LIB 	= -lreadline -L${HOME}/.brew/opt/readline/lib
