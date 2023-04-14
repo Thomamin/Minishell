@@ -65,18 +65,34 @@ int	mini_export(t_cmd_info *cmd, t_env_info *env)
 			tmp_env = tmp_env->next;
 			i++;
 		}
-		copy_env = (t_env_info *)malloc(sizeof(t_env_info) * (i + 1));
+		copy_env = (t_env_info *)malloc(sizeof(t_env_info) * i);
 		if (!copy_env)
 			return (1);
-		(copy_env + i)->next = NULL;
-		tmp_env = env;
+
+		i = 0;
+		tmp_env = copy_env;
+		while (i < sizeof(*copy_env) / sizeof(t_env_info))
+		{
+			if (i == 0)
+				(tmp_env + i)->prev = NULL;
+			else
+				(tmp_env + i)->prev = (tmp_env + i - 1);
+			if (i == sizeof(*copy_env) / sizeof(t_env_info) - 1)
+				(tmp_env + i)->next = NULL;
+			else
+				(tmp_env + i)->next = (tmp_env + i + 1);
+			i++;
+		} 
+
+		tmp_env = copy_env;
 		while (env != NULL)
 		{
-			copy_env->env_key = env->env_key;
-			copy_env->env_val = env->env_val;
-			copy_env->next = env->next;
-			copy_env->prev = env->prev;
-			i++;
+	printf("dbg export: %s\n", env->env_key);
+			tmp_env->env_key = env->env_key;
+			tmp_env->env_val = env->env_val;
+
+			env = env->next;
+			tmp_env = tmp_env->next;
 		}
 
 		// list sort
@@ -91,23 +107,21 @@ int	mini_export(t_cmd_info *cmd, t_env_info *env)
 		}
 		free (copy_env);
 	}
-	else
+	else //argument 즉 설정할 환경변수가 "ABC=12345"과 같은 형식으로 있는 경우 
 	{
 		i = 1;
 		while (cmd->cmd_and_av[i])
 		{
-		// 문자열 중 처음 만나는 '='기준으로 identifier와 value로 나눔
-			ft_strlcpy(key, cmd->cmd_and_av[i], ft_c_position(cmd->cmd_and_av[i], '='));
-			ft_strlcpy(val, cmd->cmd_and_av[i] + ft_strlen(key), ft_strlen(cmd->cmd_and_av[i]) - ft_strlen(key) - 1);
-			//argument_tokens 갯수가 2가 아닌 경우 
-			// 각 argument들 'identifier=value'형태인지 검사 아닌 경우 'argument값: not a valid identifier' error stderr출력
-			//idendifier는 alphabet이나 ‘_’ 가능. 실패시 error code를  exit_status에 반영
-
-		
-		// t_env_info 구조체 생성
-		// key(identifier)와 value값 assign
-		// env list에 add
-
+			// identifier를 추출하여 identifier 기준에 맞는지 확인
+			if (!ft_is_valid_identifier(get_env_key(cmd->cmd_and_av[i])))
+				return(printstderr(ft_strjoin(ft_strjoin("export: '", get_env_key(cmd->cmd_and_av[i])), "'not a valid identifier\n")));		
+			
+			tmp_env = env;
+			while (tmp_env->next) //env list끝에 add하기 위해
+				tmp_env = tmp_env->next;
+printf("dbg export: %s\n", cmd->cmd_and_av[i]);
+			tmp_env->next = new_env(cmd->cmd_and_av[i]); // t_env_info 구조체 생성하여 env list에 add
+printf("dbg export tmp_env key: %s\n", tmp_env->next->env_key);			
 			i++;
 		}
 	}
