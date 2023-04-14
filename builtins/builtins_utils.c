@@ -21,15 +21,12 @@ int	ft_is_valid_identifier(char *identifier)
 {
 //validate variable identifier - 첫글자는 alphabet or _  두번째 이후 char는 alphanumeric or _
 	int	i;
-
 	if(!ft_isalpha(*identifier) && *identifier != '_')
 		return (0);
-	i = 1;
+	i = 0;
 	while (*identifier && (ft_isalnum(*(identifier + i)) || *(identifier + i) == '_'))
-	{
 		i++;
-	}
-	if (*identifier)
+	if (*(identifier + i))
 		return (0);
 	return (1);
 }
