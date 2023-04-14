@@ -12,9 +12,9 @@ int	change_dir(char *path, t_env_info *env)
 	ret = chdir(path);
 	if (ret == 0)
 	{
-		ft_setenv(env, "OLDPWD", ft_getenv(env, "PWD"));
+		ft_setenv(env, ft_strjoin("OLDPWD=", ft_getenv(env, "PWD")));
 		getcwd(buf, 400);
-		ft_setenv(env, "PWD", ft_strdup(buf));
+		ft_setenv(env, ft_strjoin("PWD=", ft_strdup(buf)));
 	}
 	else if (ret == -1) 
 		perror("cd");
@@ -62,6 +62,7 @@ int	mini_cd(t_cmd_info *cmd, t_env_info *env)
 				path = ft_strjoin(ft_strjoin(buf, "/"), path);
 			}
 		}
+		printf("path: %s\n", path);
 		return (change_dir(path, env));
 	}
 }
