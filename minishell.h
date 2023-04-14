@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shane <shane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yuhyeongmin <yuhyeongmin@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 13:07:34 by youngjpa          #+#    #+#             */
-/*   Updated: 2023/04/13 15:10:29 by shane            ###   ########.fr       */
+/*   Updated: 2023/04/14 15:12:23 by yuhyeongmin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,15 +171,15 @@ void	ft_dup2(int fd1, int fd2);
 void	ft_pipe(int *fds);
 pid_t	ft_fork(void);
 
-
+int mini_exit(t_cmd_info *cmd, t_env_info *env);
 int	ft_is_valid_identifier(char *identifier);
 void printstderr(char *str);
+void	ft_setenv(t_env_info *env_head, char *key, char *val);
 int	cmd_and_av_cnt(char **cmd_and_av);
-int	change_dir(char *path);
+int	change_dir(char *path, t_env_info *env);
 int	mini_cd(t_cmd_info *cmd, t_env_info *env);
 int	mini_echo(t_cmd_info *cmd, t_env_info *env);
 int mini_env(t_cmd_info *cmd, t_env_info *env);
-int mini_exit(t_cmd_info *cmd);
 int	mini_export(t_cmd_info *cmd, t_env_info *env);
 int	mini_pwd(t_cmd_info *cmd, t_env_info *env);
 int mini_unset(t_cmd_info *cmd, t_env_info *env);
