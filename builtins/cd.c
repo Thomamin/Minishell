@@ -62,7 +62,6 @@ int	mini_cd(t_cmd_info *cmd, t_env_info *env)
 				path = ft_strjoin(ft_strjoin(buf, "/"), path);
 			}
 		}
-		printf("path: %s\n", path);
 		return (change_dir(path, env));
 	}
 }
