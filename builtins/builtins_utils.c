@@ -11,9 +11,10 @@ int	cmd_and_av_cnt(char **cmd_and_av)
 	return cnt;
 }
 
-void printstderr(char *str)
+int	printstderr(char *str)
 {
 	write(2, str, ft_strlen(str));
+	return (1);
 }
 
 int	ft_is_valid_identifier(char *identifier)
