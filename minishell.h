@@ -138,6 +138,7 @@ char		*get_env_value(char *key_value);
 char		*get_env_key(char *key_value);
 
 char	*ft_getenv(t_env_info *info_env, char *key);
+void	ft_setenv(t_env_info *env_head, char *key_value);
 
 
 static char	**get_envp(t_env_info *head);
@@ -165,29 +166,26 @@ void	delete_tmp_file(void);
 int		init_heredoc(t_cmd_info *cmd);
 void	clear_cmd(t_cmd_info *cmd);
 
-int	ft_open(char *fname, int oflag, int mode);
-int	ft_close(int fd);
+int		ft_open(char *fname, int oflag, int mode);
+int		ft_close(int fd);
 void	ft_dup2(int fd1, int fd2);
 void	ft_pipe(int *fds);
 pid_t	ft_fork(void);
 
-int mini_exit(t_cmd_info *cmd, t_env_info *env);
-int	ft_is_valid_identifier(char *identifier);
-void printstderr(char *str);
-void	ft_setenv(t_env_info *env_head, char *key, char *val);
-int	cmd_and_av_cnt(char **cmd_and_av);
-int	change_dir(char *path, t_env_info *env);
-int	mini_cd(t_cmd_info *cmd, t_env_info *env);
-int	mini_echo(t_cmd_info *cmd, t_env_info *env);
-int mini_env(t_cmd_info *cmd, t_env_info *env);
-int	mini_export(t_cmd_info *cmd, t_env_info *env);
-int	mini_pwd(t_cmd_info *cmd, t_env_info *env);
-int mini_unset(t_cmd_info *cmd, t_env_info *env);
+int		mini_exit(t_cmd_info *cmd, t_env_info *env);
+int		ft_is_valid_identifier(char *identifier);
+int		printstderr(char *str);
+int		cmd_and_av_cnt(char **cmd_and_av);
+int		change_dir(char *path, t_env_info *env);
+int		mini_cd(t_cmd_info *cmd, t_env_info *env);
+int		mini_echo(t_cmd_info *cmd, t_env_info *env);
+int		mini_env(t_cmd_info *cmd, t_env_info *env);
+int		mini_export(t_cmd_info *cmd, t_env_info *env);
+int		mini_pwd(t_cmd_info *cmd, t_env_info *env);
+int		mini_unset(t_cmd_info *cmd, t_env_info *env);
 
 
-int			cmd_and_av_cnt(char **cmd_and_av);
-void		printstderr(char *str);
-int			ft_is_valid_identifier(char *identifier);
+
 
 #endif
 
