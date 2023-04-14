@@ -6,7 +6,7 @@
 /*   By: yuhyeongmin <yuhyeongmin@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 13:57:50 by youngjpa          #+#    #+#             */
-/*   Updated: 2023/04/13 15:14:31 by yuhyeongmin      ###   ########.fr       */
+/*   Updated: 2023/04/14 15:13:00 by yuhyeongmin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static int	execute_cmd(t_cmd_info *cmd, t_env_info *info_env)
 	if (!ft_strcmp(cmd->cmd_and_av[0], "env"))
 		return (mini_env(cmd, info_env));
 	if (!ft_strcmp(cmd->cmd_and_av[0], "exit"))
-		return (mini_exit(cmd));
+		return (mini_exit(cmd, info_env));
 	return (os_builtins(cmd, info_env));
 	return 0;
 }
