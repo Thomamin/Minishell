@@ -21,7 +21,7 @@ t_env_info	*ft_sort_list(t_env_info *list)
 	cur_el = list;
 	if (cur_el->next == NULL)
 		return (list);
-printf("cur_el key: %s, next_el key: %s\n", cur_el->env_key, cur_el->next->env_key);
+//printf("cur_el key: %s, next_el key: %s\n", cur_el->env_key, cur_el->next->env_key);
 	ft_sort_list(cur_el->next);
 //	while (cur_el->next != NULL && (ft_strcmp(cur_el->env_key, cur_el->next->env_key) > 0))
 	while (cur_el->next->env_key != NULL && (ft_strcmp(cur_el->env_key, cur_el->next->env_key) > 0))
