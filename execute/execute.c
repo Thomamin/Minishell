@@ -84,8 +84,8 @@ static int	execute_cmd(t_cmd_info *cmd, t_env_info *info_env)
 		return (mini_cd(cmd, info_env));
 	if (!ft_strcmp(cmd->cmd_and_av[0], "pwd"))
 		return (mini_pwd(cmd, info_env));
-	// if (!ft_strcmp(cmd->cmd_and_av[0], "export"))
-	// 	return (mini_export(cmd, info_env));
+	if (!ft_strcmp(cmd->cmd_and_av[0], "export"))
+	 	return (mini_export(cmd, info_env));
 	if (!ft_strcmp(cmd->cmd_and_av[0], "unset"))
 		return (mini_unset(cmd, info_env));
 	if (!ft_strcmp(cmd->cmd_and_av[0], "env"))
