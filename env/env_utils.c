@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuhyeongmin <yuhyeongmin@student.42.fr>    +#+  +:+       +#+        */
+/*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/08 15:16:32 by hyyoo             #+#    #+#             */
-/*   Updated: 2023/04/13 15:59:34 by yuhyeongmin      ###   ########.fr       */
+/*   Created: 2023/04/18 14:32:53 by dmin              #+#    #+#             */
+/*   Updated: 2023/04/18 14:32:56 by dmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,10 @@ char	*get_env_key(char *key_value)
 
 	len = 0;
 	while (key_value[len] != '=' && key_value[len] != 0)
-	{
 		++len;
-	}
 	if (key_value[len] == '\0')
-	{
-        return (NULL);
-    }
+    	// return (NULL);
+		return (ft_strdup(key_value));
 	temp = (char *)ft_malloc(sizeof(char), len + 1);
 	i = 0;
 	while (i < len)
@@ -46,13 +43,9 @@ char	*get_env_value(char *key_value)
 
 	len = 0;
 	while (key_value[len] != 0 && key_value[len] != '=')
-	{
         ++key_value;
-    }
 	if (key_value[len] == 0)
-	{
         return (NULL);
-    }
 	len = ft_strlen(++key_value);
 	temp = (char *)ft_malloc(sizeof(char), len + 1);
 	i = 0;
@@ -67,15 +60,12 @@ char	*get_env_value(char *key_value)
 
 t_env_info	*compare_env_key(t_env_info *env_head, char *key)
 {
-	t_env_info	*temp;
+	t_env_info	*tmp;
 
-	temp = env_head;
-	// while (cur->key != 0 && ft_strncmp(key, cur->key, ft_strlen(cur->key)))
-	while (temp->env_key != 0 && ft_strncmp(key, temp->env_key, ft_strlen(key)))
-	{
-        temp = temp->next;
-    }
-	return (temp);
+	tmp = env_head;
+	while (tmp && tmp->env_key && ft_strncmp(key, tmp->env_key, ft_strlen(key)))
+    	tmp = tmp->next;
+	return (tmp);
 }
 
 t_env_info	*new_env(char *key_value)
@@ -96,8 +86,8 @@ t_env_info	*new_env(char *key_value)
 		if (temp->env_key == NULL)
 			return (NULL);
 		temp->env_val = get_env_value(key_value);
-		if (temp->env_val == NULL)
-			return (NULL);
+		// if (temp->env_val == NULL)
+		// 	return (NULL);
 		temp->next = NULL;
 		temp->prev = NULL;
 	}
@@ -106,7 +96,7 @@ t_env_info	*new_env(char *key_value)
 
 int	ft_env_init(t_env_info *cur, char **envp)
 {
-	size_t	i;
+	size_t		i;
 	t_env_info	*temp;
 
 	i = 0;

@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: shane <shane@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/07 13:54:59 by youngjpa          #+#    #+#             */
-/*   Updated: 2023/04/11 13:53:34 by shane            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -19,7 +9,7 @@ static char	*ft_tokenize_while_dollar(char str, char *new, t_env_info *head, int
 	env = NULL;
 	if (ft_isalnum(str) || str == '_')
 		env = ft_join_ascii(env, str);
-	else if (str == '?' && env == NULL) 
+	else if (str == '?' && env == NULL)
 	{
 		env = ft_itoa(g_exit_signal_code);
 		new = ft_strjoin_free(new, env);
@@ -33,10 +23,10 @@ static char	*ft_tokenize_while_dollar(char str, char *new, t_env_info *head, int
 			if (!(str == '\"' && quotes != 1) && !(str == '\'' && quotes != 2))
 				new = ft_join_ascii(new, str);
 			env = ft_free(env);
-			g_exit_signal_code = 0; 
+			g_exit_signal_code = 0;
 		}
 		else
-			new = ft_join_ascii(new, '$'); 
+			new = ft_join_ascii(new, '$');
 	}
 	return (new);
 }
@@ -48,7 +38,7 @@ static char	*ft_tokenize_while_else(char c, char *new, int quotes)
 	ret = NULL;
 	if (c == -32)
 		ret = ft_join_ascii(new, ' ');
-	else if (!(c == '\"' && quotes != 1) && !(c == '\'' && quotes != 2)) 
+	else if (!(c == '\"' && quotes != 1) && !(c == '\'' && quotes != 2))
 		ret = ft_join_ascii(new, c);
 	else
 		return (new);
@@ -74,15 +64,15 @@ static char	*ft_tokenize_while(t_cmd_info *cmd, t_env_info *head, int i)
 	j = 0;
 	ch_quote = 0;
 	ch_dollar = 0;
-	while (j <= (int)ft_strlen(cmd->cmd_and_av[i])) 
+	while (j <= (int)ft_strlen(cmd->cmd_and_av[i]))
 	{
-		ch_quote = set_quotes(cmd->cmd_and_av[i][j], ch_quote, cmd); 
-		if (cmd->cmd_and_av[i][j] == '$' && ch_quote != 1 && ch_dollar == 0) 
+		ch_quote = set_quotes(cmd->cmd_and_av[i][j], ch_quote, cmd);
+		if (cmd->cmd_and_av[i][j] == '$' && ch_quote != 1 && ch_dollar == 0)
 			ch_dollar = 1;
 		else if (ch_dollar == 1)
 		{
 			new = ft_tokenize_while_dollar(cmd->cmd_and_av[i][j], new, head, ch_quote);
-			ch_dollar = dollar_check(cmd->cmd_and_av[i][j]); 
+			ch_dollar = dollar_check(cmd->cmd_and_av[i][j]);
 		}
 		else
 			new = ft_tokenize_while_else(cmd->cmd_and_av[i][j], new, ch_quote);
@@ -95,15 +85,15 @@ void	ft_tokenize(t_cmd_info *cmd, t_env_info *info_env)
 {
 	char	*new;
 	int		i;
-	
-	while (cmd) 
+
+	while (cmd)
 	{
 		i = 0;
-		while (i < cmd->ac) 
+		while (i < cmd->ac)
 		{
-			new = ft_tokenize_while(cmd, info_env, i); 
+			new = ft_tokenize_while(cmd, info_env, i);
 			if (new == NULL && cmd->ft_dollar_flag)
-				ft_del_argv(cmd, &i); 
+				ft_del_argv(cmd, &i);
 			else
 				ft_change_argv(cmd, new, i);
 			i++;
