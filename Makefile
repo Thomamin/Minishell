@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Werror -Wall -Wextra
+CFLAGS = -Werror -Wall -Wextra $(SAN)
 
 NAME = minishell
 
@@ -11,7 +11,8 @@ SRCS = minishell.c \
 	   ./parse/quotes_setting.c \
 	   ./parse/tokenize_util.c \
 	   ./parse/tokenize.c \
-	   ./utilites/exit_errono.c \
+	   ./utilites/print_error.c \
+	   ./utilites/exit_errno.c \
 	   ./utilites/file_open_check.c \
 	   ./utilites/init_and_free.c \
 	   ./utilites/signal_handle.c \

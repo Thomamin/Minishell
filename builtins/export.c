@@ -29,7 +29,7 @@ t_env_info	*ft_sort_list(t_env_info *list)
 	t_env_info	*cur_el;
 
 	cur_el = list;
-	if (cur_el->next == NULL)
+	if (cur_el == NULL || cur_el->next == NULL)
 		return (list);
 	ft_sort_list(cur_el->next);
 	while (cur_el->next->env_key != NULL \
@@ -89,6 +89,7 @@ int	mini_print_sorted_ev(t_env_info *env)
 int	mini_export(t_cmd_info *cmd, t_env_info *env)
 {
 	int			i;
+	t_env_info	*tmp;
 
 	if (cmd_and_av_cnt(cmd->cmd_and_av) == 1)
 		return (mini_print_sorted_ev(env));
@@ -96,17 +97,30 @@ int	mini_export(t_cmd_info *cmd, t_env_info *env)
 	while (cmd->cmd_and_av[i])
 	{
 		if (!ft_is_valid_identifier(cmd->cmd_and_av[i]))
-			return (printstderr(ft_strjoin(ft_strjoin("export: '", \
-			cmd->cmd_and_av[i]), "'not a valid identifier\n")));
+			return (printstderr(ft_strjoin(ft_strjoin("export: `", \
+			cmd->cmd_and_av[i]), "': not a valid identifier\n")));
 		env = compare_env_key(env, get_env_key(cmd->cmd_and_av[i]));
 		if (env->env_key)
 			env->env_val = get_env_value(cmd->cmd_and_av[i]);
 		else
 		{
-			env->prev->next = new_env(cmd->cmd_and_av[i]);
-			env->prev->next->next = env;
-			env->prev->next->prev = env->prev;
-			env->prev = env->prev->next;
+			if (env->prev) //끝 null node 이전 node가 있으면 
+			{
+				env->prev->next = new_env(cmd->cmd_and_av[i]);
+				env->prev->next->next = env;
+				env->prev->next->prev = env->prev;
+				env->prev = env->prev->next;
+			}
+			else // null node만 있는 경우, node를 생성하여 값을 기존 null node로 옮기고 생성된 node값을 null로 set 
+			{
+				tmp = new_env(cmd->cmd_and_av[i]);
+				env->env_key = tmp->env_key;
+				env->env_val = tmp->env_val;
+				tmp->prev = env;
+				env->next = tmp;
+				tmp->env_key = NULL;
+				tmp->env_val = NULL;
+			}
 		}
 		i++;
 	}

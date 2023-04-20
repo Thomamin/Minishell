@@ -18,6 +18,7 @@ static char	*in_pipe(char *str, int *ch_pipe, t_cmd_info **cmd, t_cmd_info *next
 
 static char	*add_redirect_space(char *str, char *input, char c)
 {
+//printf("------------------- 1		str : %s	input : %s-----------\n", str, input);	
 	if (c == '>')
 	{
 		input--;
@@ -40,6 +41,7 @@ static char	*add_redirect_space(char *str, char *input, char c)
 		if (!(*input == '<' || *input == ' '))
 			str = ft_join_ascii(str, ' ');
 	}
+//printf("------------------- 3		str : %s	input: %s-----------\n", str, input);
 	return (str);
 }
 

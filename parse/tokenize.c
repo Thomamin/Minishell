@@ -6,7 +6,6 @@ static char	*ft_tokenize_while_dollar(char str, char *new, t_env_info *head, int
 {
 	static char	*env;
 
-	env = NULL;
 	if (ft_isalnum(str) || str == '_')
 		env = ft_join_ascii(env, str);
 	else if (str == '?' && env == NULL)

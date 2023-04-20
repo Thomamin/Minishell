@@ -84,11 +84,14 @@ void		ft_execve(const char *file, char *const *argv, char *const *envp);
 char		*ft_getcwd(char *buf, size_t size);
 
 int			is_exist_file(char *tmp_file_name);
-void		exit_errno(char *str1, char *str2, int exit_code);
+
 void		print_quote_err3(char *cmd, char *str1, char *str2);
 void		print_err1(char *str);
 void		print_err2(char *str1, char *str2);
 void		print_err3(char *cmd, char *str1, char *str2);
+void		print_err_with_errno(char *str1, char *str2, int exit_code);
+
+void		exit_errno(char *str1, char *str2, int exit_code);
 
 void		set_signal(int sig_int, int sig_quit);
 

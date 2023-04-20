@@ -18,18 +18,15 @@ int	mini_unset(t_cmd_info *cmd, t_env_info *env)
 	char		*key;
 	int			i;
 
-	temp = env;
 	i = 1;
 	while (cmd->cmd_and_av[i])
 	{
 		key = cmd->cmd_and_av[i];
 		if (!ft_is_valid_identifier(key))
-			return (printstderr(ft_strjoin(ft_strjoin("unset: '", key), \
+			return (printstderr(ft_strjoin(ft_strjoin("unset: `", key), \
 										"': not a valid identifier\n")));
-		while (temp->env_key != 0 && \
-							ft_strncmp(key, temp->env_key, ft_strlen(key)))
-			temp = temp->next;
-		if (temp)
+		temp = compare_env_key(env, key);
+		if (temp && temp->env_key)
 			temp->prev->next = temp->next;
 		i++;
 	}

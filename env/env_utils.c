@@ -99,26 +99,34 @@ int	ft_env_init(t_env_info *cur, char **envp)
 	size_t		i;
 	t_env_info	*temp;
 
-	i = 0;
-	cur->env_key = get_env_key(envp[1]);
-	if (cur->env_key == NULL)
-		return (-1);
-	cur->env_val = get_env_value(envp[1]);
-	if (cur->env_val == NULL)
-		return (-1);
-	cur->next = 0;
-	cur->prev = 0;
-	while (envp[++i])
+	if (*envp)
 	{
-		temp = new_env(envp[i]);
-		if (temp == NULL)
+		cur->env_key = get_env_key(envp[0]);
+		if (cur->env_key == NULL)
 			return (-1);
-		cur->next = temp;
+		cur->env_val = get_env_value(envp[0]);
+		if (cur->env_val == NULL)
+			return (-1);
+		i = 1;
+		while (envp[i])
+		{
+			temp = new_env(envp[i++]);
+			if (temp == NULL)
+				return (-1);
+			temp->prev = cur;
+			cur->next = temp;
+			cur = temp;
+		}
+		temp = new_env(NULL);
 		temp->prev = cur;
-		cur = cur->next;
+		cur->next = temp;		
 	}
-	temp = new_env(NULL);
-	temp->prev = cur;
-	cur->next = temp;
+	else
+	{
+		cur->next = NULL;
+		cur->prev = NULL;
+		cur->env_key = NULL;
+		cur->env_val = NULL;
+	}
 	return (0);
 }
