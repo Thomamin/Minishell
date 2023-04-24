@@ -1,4 +1,14 @@
-//pwd.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/18 14:30:20 by dmin              #+#    #+#             */
+/*   Updated: 2023/04/18 14:30:24 by dmin             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -6,7 +16,6 @@ int	mini_pwd(t_cmd_info *cmd, t_env_info *env)
 {
 	(void) cmd;
 	(void) env;
-
-	printf("%s\n",ft_getenv(env, "PWD"));
-	return(0);
+	printf("%s\n", ft_getenv(env, "PWD"));
+	return (0);
 }

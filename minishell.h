@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yuhyeongmin <yuhyeongmin@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/07 13:07:34 by youngjpa          #+#    #+#             */
-/*   Updated: 2023/04/14 15:12:23 by yuhyeongmin      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -59,7 +48,7 @@ typedef struct s_env_info
 	char				*env_val;
 	struct s_env_info	*next;
 	struct s_env_info	*prev;
-}			t_env_info; 
+}			t_env_info;
 
 void		print_checker(t_cmd_info *cmd, t_env_info *env);
 
@@ -95,29 +84,25 @@ void		ft_execve(const char *file, char *const *argv, char *const *envp);
 char		*ft_getcwd(char *buf, size_t size);
 
 int			is_exist_file(char *tmp_file_name);
-void		exit_errno(char *str1, char *str2, int exit_code);
+
 void		print_quote_err3(char *cmd, char *str1, char *str2);
 void		print_err1(char *str);
 void		print_err2(char *str1, char *str2);
 void		print_err3(char *cmd, char *str1, char *str2);
+void		print_err_with_errno(char *str1, char *str2, int exit_code);
+
+void		exit_errno(char *str1, char *str2, int exit_code);
 
 void		set_signal(int sig_int, int sig_quit);
 
 int			ft_str_isspace(char *str);
 void		ft_main_init(int argc, char **argv);
-static void	first(t_cmd_info *tmp, t_cmd_info **ptr, t_cmd_info **head);
 void		ft_arg_check(t_cmd_info **cmd);
 
-static void	*is_free(char **str, int str_index);
-static int	get_word_cnt(char const *str, char c);
-static char	**set_worddup(char const *s, char c, char **mem);
 char		**ft_split_arg(char const *s, char c, int *argc);
 
 char		*ft_join_ascii(char *s1, char s2);
 
-static char	*in_pipe(char *str, int *ch_pipe, t_cmd_info **cmd, t_cmd_info *next);
-static char	*add_redirect_space(char *str, char *input, char c);
-static char	*out_pipe(char *str, int *ch_pipe, char *input, int ch_quote);
 void		ft_parse(char *input, t_cmd_info *cmd);
 
 int			set_quotes(char str, int ch_quotes, t_cmd_info *cmd);
@@ -125,10 +110,6 @@ char		*ft_strjoin_free(char *s1, char *s2);
 void		ft_del_argv(t_cmd_info *cmd, int *i);
 void		ft_change_argv(t_cmd_info *cmd, char *new, int i);
 
-static char	*ft_tokenize_while_dollar(char str, char *new, t_env_info *head, int quotes);
-static char	*ft_tokenize_while_else(char c, char *new, int quotes);
-static int	dollar_check(char c);
-static char	*ft_tokenize_while(t_cmd_info *cmd, t_env_info *head, int i);
 void		ft_tokenize(t_cmd_info *cmd, t_env_info *head);
 
 int			ft_env_init(t_env_info *cur, char **envp);
@@ -137,55 +118,44 @@ t_env_info	*compare_env_key(t_env_info *info_env, char *key);
 char		*get_env_value(char *key_value);
 char		*get_env_key(char *key_value);
 
-char	*ft_getenv(t_env_info *info_env, char *key);
-void	ft_setenv(t_env_info *env_head, char *key_value);
+char		*ft_getenv(t_env_info *info_env, char *key);
+void		ft_setenv(t_env_info *env_head, char *key_value);
 
+void		execute(t_cmd_info *cmd, t_env_info *info_env);
+void		redirect(t_cmd_info *cmd);
+int			heredoc(t_cmd_info *cmd);
+void		close_unused_fd(t_cmd_info *cmd, pid_t pid);
+int			check_valid_syntax(t_cmd_info *cmd);
+void		wait_child(void);
+int			is_need_fork(t_cmd_info *cmd);
+void		restore_redirection_char(t_cmd_info *cmd);
 
-static char	**get_envp(t_env_info *head);
-static int	os_builtins(t_cmd_info *cmd, t_env_info *info_env);
-static int	execute_cmd(t_cmd_info *cmd, t_env_info *info_env);
-static void	do_fork_cmd(t_cmd_info *cmd, t_env_info *info_env);
-static void	do_cmd(t_cmd_info *cmd, t_env_info *info_env);
+char		*get_cmd_path(t_cmd_info *cmd, t_env_info *info_env);
 
-void	execute(t_cmd_info *cmd, t_env_info *info_env);
-void	redirect(t_cmd_info *cmd);
-int		heredoc(t_cmd_info *cmd);
-void	close_unused_fd(t_cmd_info *cmd, pid_t pid);
-int		check_valid_syntax(t_cmd_info *cmd);
-void	wait_child(void);
-int		is_need_fork(t_cmd_info *cmd);
-void	restore_redirection_char(t_cmd_info *cmd);
+int			io_file_open(t_cmd_info *cmd, t_env_info *info_env);
+void		trim_cmd_argv(t_cmd_info *cmd, const char *set, int direction);
 
-char	*get_cmd_path(t_cmd_info *cmd, t_env_info *info_env);
+char		*get_tmp_file_name(void);
+void		delete_tmp_file(void);
+int			init_heredoc(t_cmd_info *cmd);
+void		clear_cmd(t_cmd_info *cmd);
 
-int		io_file_open(t_cmd_info *cmd, t_env_info *info_env);
-void	trim_cmd_argv(t_cmd_info *cmd, const char *set, int direction);
+int			ft_open(char *fname, int oflag, int mode);
+int			ft_close(int fd);
+void		ft_dup2(int fd1, int fd2);
+void		ft_pipe(int *fds);
+pid_t		ft_fork(void);
 
-char	*get_tmp_file_name(void);
-void	delete_tmp_file(void);
-int		init_heredoc(t_cmd_info *cmd);
-void	clear_cmd(t_cmd_info *cmd);
-
-int		ft_open(char *fname, int oflag, int mode);
-int		ft_close(int fd);
-void	ft_dup2(int fd1, int fd2);
-void	ft_pipe(int *fds);
-pid_t	ft_fork(void);
-
-int		mini_exit(t_cmd_info *cmd, t_env_info *env);
-int		ft_is_valid_identifier(char *identifier);
-int		printstderr(char *str);
-int		cmd_and_av_cnt(char **cmd_and_av);
-int		change_dir(char *path, t_env_info *env);
-int		mini_cd(t_cmd_info *cmd, t_env_info *env);
-int		mini_echo(t_cmd_info *cmd, t_env_info *env);
-int		mini_env(t_cmd_info *cmd, t_env_info *env);
-int		mini_export(t_cmd_info *cmd, t_env_info *env);
-int		mini_pwd(t_cmd_info *cmd, t_env_info *env);
-int		mini_unset(t_cmd_info *cmd, t_env_info *env);
-
-
-
+int			mini_exit(t_cmd_info *cmd, t_env_info *env);
+int			ft_is_valid_identifier(char *identifier);
+int			printstderr(char *str);
+int			cmd_and_av_cnt(char **cmd_and_av);
+int			change_dir(char *path, t_env_info *env);
+int			mini_cd(t_cmd_info *cmd, t_env_info *env);
+int			mini_echo(t_cmd_info *cmd, t_env_info *env);
+int			mini_env(t_cmd_info *cmd, t_env_info *env);
+int			mini_export(t_cmd_info *cmd, t_env_info *env);
+int			mini_pwd(t_cmd_info *cmd, t_env_info *env);
+int			mini_unset(t_cmd_info *cmd, t_env_info *env);
 
 #endif
-
