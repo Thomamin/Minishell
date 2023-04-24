@@ -91,6 +91,7 @@ int	mini_export(t_cmd_info *cmd, t_env_info *env)
 	int			i;
 	t_env_info	*tmp;
 
+
 	if (cmd_and_av_cnt(cmd->cmd_and_av) == 1)
 		return (mini_print_sorted_ev(env));
 	i = 1;
