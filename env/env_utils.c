@@ -6,7 +6,7 @@
 /*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:32:53 by dmin              #+#    #+#             */
-/*   Updated: 2023/04/18 14:32:56 by dmin             ###   ########.fr       */
+/*   Updated: 2023/04/27 16:27:17 by hyeonjo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ char	*get_env_key(char *key_value)
 	while (key_value[len] != '=' && key_value[len] != 0)
 		++len;
 	if (key_value[len] == '\0')
-    	// return (NULL);
 		return (ft_strdup(key_value));
 	temp = (char *)ft_malloc(sizeof(char), len + 1);
 	i = 0;
@@ -43,9 +42,9 @@ char	*get_env_value(char *key_value)
 
 	len = 0;
 	while (key_value[len] != 0 && key_value[len] != '=')
-        ++key_value;
+		++key_value;
 	if (key_value[len] == 0)
-        return (NULL);
+		return (NULL);
 	len = ft_strlen(++key_value);
 	temp = (char *)ft_malloc(sizeof(char), len + 1);
 	i = 0;
@@ -56,16 +55,6 @@ char	*get_env_value(char *key_value)
 	}
 	temp[i] = 0;
 	return (temp);
-}
-
-t_env_info	*compare_env_key(t_env_info *env_head, char *key)
-{
-	t_env_info	*tmp;
-
-	tmp = env_head;
-	while (tmp && tmp->env_key && ft_strncmp(key, tmp->env_key, ft_strlen(key)))
-    	tmp = tmp->next;
-	return (tmp);
 }
 
 t_env_info	*new_env(char *key_value)
@@ -86,19 +75,34 @@ t_env_info	*new_env(char *key_value)
 		if (temp->env_key == NULL)
 			return (NULL);
 		temp->env_val = get_env_value(key_value);
-		// if (temp->env_val == NULL)
-		// 	return (NULL);
 		temp->next = NULL;
 		temp->prev = NULL;
 	}
 	return (temp);
 }
 
-int	ft_env_init(t_env_info *cur, char **envp)
+static int	make_env_list(t_env_info *temp, t_env_info **cur, char **envp)
 {
-	size_t		i;
+	size_t	i;
+
+	i = 1;
+	while (envp[i])
+	{
+		temp = new_env(envp[i++]);
+		if (temp == NULL)
+			return (-1);
+		temp->prev = *cur;
+		(*cur)->next = temp;
+		*cur = temp;
+	}
+	return (0);
+}
+
+int	initialize_env(t_env_info *cur, char **envp)
+{
 	t_env_info	*temp;
 
+	temp = NULL;
 	if (*envp)
 	{
 		cur->env_key = get_env_key(envp[0]);
@@ -107,19 +111,11 @@ int	ft_env_init(t_env_info *cur, char **envp)
 		cur->env_val = get_env_value(envp[0]);
 		if (cur->env_val == NULL)
 			return (-1);
-		i = 1;
-		while (envp[i])
-		{
-			temp = new_env(envp[i++]);
-			if (temp == NULL)
-				return (-1);
-			temp->prev = cur;
-			cur->next = temp;
-			cur = temp;
-		}
+		if (make_env_list(temp, &cur, envp) == -1)
+			return (-1);
 		temp = new_env(NULL);
 		temp->prev = cur;
-		cur->next = temp;		
+		cur->next = temp;
 	}
 	else
 	{

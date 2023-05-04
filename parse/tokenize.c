@@ -1,8 +1,18 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/26 22:27:20 by dmin              #+#    #+#             */
+/*   Updated: 2023/04/27 13:19:09 by hyeonjo          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*ft_tokenize_while_dollar(char str, char *new, t_env_info *head, int quotes)
+static char	*tokenize_dollar(char str, char *new, t_env_info *head, int quotes)
 {
 	static char	*env;
 
@@ -19,7 +29,8 @@ static char	*ft_tokenize_while_dollar(char str, char *new, t_env_info *head, int
 		if (env != NULL)
 		{
 			new = ft_strjoin_free(new, ft_getenv(head, env));
-			if (!(str == '\"' && quotes != 1) && !(str == '\'' && quotes != 2))
+			if (!(str == '\"' && quotes != 1) && !(str == '\'' && quotes != 2) \
+			&& !(str == '$' && quotes != 2))
 				new = ft_join_ascii(new, str);
 			env = ft_free(env);
 			g_exit_signal_code = 0;
@@ -30,7 +41,7 @@ static char	*ft_tokenize_while_dollar(char str, char *new, t_env_info *head, int
 	return (new);
 }
 
-static char	*ft_tokenize_while_else(char c, char *new, int quotes)
+static char	*tokenize_else(char c, char *new, int quotes)
 {
 	char	*ret;
 
@@ -52,7 +63,7 @@ static int	dollar_check(char c)
 		return (0);
 }
 
-static char	*ft_tokenize_while(t_cmd_info *cmd, t_env_info *head, int i)
+static char	*tokenize_loop(t_cmd_info *cmd, t_env_info *head, int i)
 {
 	char	*new;
 	int		j;
@@ -70,17 +81,17 @@ static char	*ft_tokenize_while(t_cmd_info *cmd, t_env_info *head, int i)
 			ch_dollar = 1;
 		else if (ch_dollar == 1)
 		{
-			new = ft_tokenize_while_dollar(cmd->cmd_and_av[i][j], new, head, ch_quote);
+			new = tokenize_dollar(cmd->cmd_and_av[i][j], new, head, ch_quote);
 			ch_dollar = dollar_check(cmd->cmd_and_av[i][j]);
 		}
 		else
-			new = ft_tokenize_while_else(cmd->cmd_and_av[i][j], new, ch_quote);
+			new = tokenize_else(cmd->cmd_and_av[i][j], new, ch_quote);
 		j++;
 	}
 	return (new);
 }
 
-void	ft_tokenize(t_cmd_info *cmd, t_env_info *info_env)
+void	tokenize(t_cmd_info *cmd, t_env_info *info_env)
 {
 	char	*new;
 	int		i;
@@ -90,8 +101,8 @@ void	ft_tokenize(t_cmd_info *cmd, t_env_info *info_env)
 		i = 0;
 		while (i < cmd->ac)
 		{
-			new = ft_tokenize_while(cmd, info_env, i);
-			if (new == NULL && cmd->ft_dollar_flag)
+			new = tokenize_loop(cmd, info_env, i);
+			if (new == NULL && cmd->dollar_flag)
 				ft_del_argv(cmd, &i);
 			else
 				ft_change_argv(cmd, new, i);

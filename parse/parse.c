@@ -1,88 +1,79 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/26 22:27:14 by dmin              #+#    #+#             */
+/*   Updated: 2023/04/27 13:20:08 by hyeonjo          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*in_pipe(char *str, int *ch_pipe, t_cmd_info **cmd, t_cmd_info *next)
+static char	*in_pipe(char *str, int *ch_pipe, t_cmd_info **cmd, t_cmd_info *nxt)
 {
 	if (*ch_pipe == 1)
 		exit_errno("argv error", "||", 1);
-	(*cmd)->ft_pipe_flag = true;
+	(*cmd)->pipe_flag = true;
 	(*cmd)->cmd_and_av = ft_split_arg(str, ' ', &((*cmd)->ac));
-	next = ft_cmd_init(); 
-	(*cmd)->next = next;
-	next->prev = (*cmd);
-	(*cmd) = next;
+	nxt = initialize_cmd();
+	(*cmd)->next = nxt;
+	nxt->prev = (*cmd);
+	(*cmd) = nxt;
 	str = ft_free(str);
 	*ch_pipe = 1;
 	return (str);
 }
 
-static char	*add_redirect_space(char *str, char *input, char c)
+static char	*add_redirect_space(char *str, char *input, char c, int idx)
 {
-//printf("------------------- 1		str : %s	input : %s-----------\n", str, input);	
 	if (c == '>')
 	{
-		input--;
-		if (!(*input == '>' || *input == ' '))
-			str = ft_join_ascii(str, ' ');
-		input++;
+		if (idx != 0)
+		{
+			if (!(*(input - 1) == '>' || *(input - 1) == ' '))
+				str = ft_join_ascii(str, ' ');
+		}
 		str = ft_join_ascii(str, -62);
-		input++;
-		if (!(*input == '>' || *input == ' '))
+		if (!(*(input + 1) == '>' || *(input + 1) == ' '))
 			str = ft_join_ascii(str, ' ');
 	}
 	else if (c == '<')
 	{
-		input--;
-		if (!(*input == '<' || *input == ' '))
-			str = ft_join_ascii(str, ' ');
-		input++;
+		if (idx != 0)
+		{
+			if (!(*(input - 1) == '<' || *(input - 1) == ' '))
+				str = ft_join_ascii(str, ' ');
+		}
 		str = ft_join_ascii(str, -60);
-		input++;
-		if (!(*input == '<' || *input == ' '))
+		if (!(*(input + 1) == '<' || *(input + 1) == ' '))
 			str = ft_join_ascii(str, ' ');
 	}
-//printf("------------------- 3		str : %s	input: %s-----------\n", str, input);
 	return (str);
 }
 
-static char	*out_pipe(char *str, int *ch_pipe, char *input, int ch_quote)
+static char	*out_pipe(char *str, t_chs *ch, char *input, int idx)
 {
-	if (ch_quote == 0 && (*input == ';' || *input == '\\'))
+	if (ch->quote == 0 && (*input == ';' || *input == '\\'))
 		exit_errno("symbol error", input, 1);
-	else if (ch_quote != 0 && *input == ' ')
+	else if (ch->quote != 0 && *input == ' ')
 		str = ft_join_ascii(str, -32);
-	else if (ch_quote == 0 && ft_isspace(*input))
+	else if (ch->quote == 0 && ft_isspace(*input))
 		str = ft_join_ascii(str, ' ');
-	else if ((*input == '>' || *input == '<') && ch_quote == 0)
-		str = add_redirect_space(str, input, *input);
+	else if ((*input == '>' || *input == '<') && ch->quote == 0)
+		str = add_redirect_space(str, input, *input, idx);
 	else
 	{
 		str = ft_join_ascii(str, input[0]);
-		*ch_pipe = 0;
+		ch->pipe = 0;
 	}
 	return (str);
 }
 
-void	ft_parse(char *input, t_cmd_info *cmd)
+static void	input_cmd_and_av(char *str, int ch_quote, t_cmd_info *cmd)
 {
-	t_cmd_info	*next;
-	char		*str;
-	int			ch_quote;
-	int			ch_pipe;
-
-	next = NULL;
-	str = NULL;
-	ch_quote = 0;
-	ch_pipe = 0;
-	while (*input)
-	{
-		ch_quote = set_quotes(*input, ch_quote, cmd);
-		if (*input == '|' && ch_quote == 0)
-			str = in_pipe(str, &ch_pipe, &cmd, next);
-		else
-			str = out_pipe(str, &ch_pipe, input, ch_quote);
-		input++;
-	}
 	if (ch_quote != 0)
 		exit_errno("quotes error", NULL, 1);
 	if (str != NULL)
@@ -90,4 +81,27 @@ void	ft_parse(char *input, t_cmd_info *cmd)
 		cmd->cmd_and_av = ft_split_arg(str, ' ', &(cmd->ac));
 		str = ft_free(str);
 	}
+}
+
+void	parse(char *input, t_cmd_info *cmd)
+{
+	t_cmd_info	*next;
+	char		*str;
+	t_chs		ch;
+	int			idx;
+
+	next = NULL;
+	str = NULL;
+	ch.quote = 0;
+	ch.pipe = 0;
+	idx = -1;
+	while (input[++idx])
+	{
+		ch.quote = set_quotes(input[idx], ch.quote, cmd);
+		if (input[idx] == '|' && ch.quote == 0)
+			str = in_pipe(str, &ch.pipe, &cmd, next);
+		else
+			str = out_pipe(str, &ch, input + idx, idx);
+	}
+	input_cmd_and_av(str, ch.quote, cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:30:20 by dmin              #+#    #+#             */
-/*   Updated: 2023/04/18 14:30:24 by dmin             ###   ########.fr       */
+/*   Updated: 2023/04/25 17:36:32 by hyeonjo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 int	mini_pwd(t_cmd_info *cmd, t_env_info *env)
 {
+	char	buf[4096];
+
 	(void) cmd;
 	(void) env;
-	printf("%s\n", ft_getenv(env, "PWD"));
+	getcwd(buf, 4096);
+	printf("%s\n", buf);
 	return (0);
 }

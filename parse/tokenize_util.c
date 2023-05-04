@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize_util.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/26 22:27:23 by dmin              #+#    #+#             */
+/*   Updated: 2023/04/27 13:02:41 by hyeonjo          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -35,7 +46,7 @@ void	ft_del_argv(t_cmd_info *cmd, int *i)
 	}
 	*i = *i - 1;
 	cmd->ac = cmd->ac - 1;
-	cmd->ft_dollar_flag = false;
+	cmd->dollar_flag = false;
 	cmd->cmd_and_av[temp] = 0;
 }
 

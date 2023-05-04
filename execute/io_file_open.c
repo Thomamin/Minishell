@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   io_file_open.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/26 22:25:23 by dmin              #+#    #+#             */
+/*   Updated: 2023/04/27 13:10:57 by hyeonjo          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -31,7 +42,7 @@ void	trim_cmd_argv(t_cmd_info *cmd, const char *set, int size)
 static void	infile_open(t_cmd_info *cmd)
 {
 	int			i;
-	const char	redir_in[2] = {-74, '\0'};
+	const char	redir_in[2] = {-60, '\0'};
 
 	while (1)
 	{
@@ -41,11 +52,15 @@ static void	infile_open(t_cmd_info *cmd)
 				break ;
 		if (cmd->cmd_and_av[i] == NULL)
 			break ;
-		if (cmd->ft_in_files > 0)
-			close(cmd->ft_in_files);
-		cmd->ft_in_files = open(cmd->cmd_and_av[i + 1], O_RDONLY, 0644);
-		if (cmd->ft_in_files == -1)
-			print_err3(cmd->cmd_and_av[i + 1], NULL, "No such file or directory");
+		if (cmd->in_fd > 0)
+			close(cmd->in_fd);
+		cmd->in_fd = open(cmd->cmd_and_av[i + 1], O_RDONLY, 0644);
+		if (cmd->in_fd == -1)
+		{
+			print_err3(cmd->cmd_and_av[i + 1], NULL, \
+					"No such file or directory");
+			close(cmd->fd[1]);
+		}
 		trim_cmd_argv(cmd, redir_in, 2);
 	}
 	return ;
@@ -54,19 +69,19 @@ static void	infile_open(t_cmd_info *cmd)
 static void	outfile_open_trim(t_cmd_info *cmd, int i)
 {
 	int			o_flag;
-	const char	r_o[2] = {-76, '\0'};
-	const char	r_a[3] = {-76, -76, '\0'};
+	const char	r_o[2] = {-62, '\0'};
+	const char	r_a[3] = {-62, -62, '\0'};
 
 	if (ft_strcmp(cmd->cmd_and_av[i], r_o) == 0)
 	{
 		o_flag = O_WRONLY | O_CREAT | O_TRUNC;
-		cmd->ft_out_files = ft_open(cmd->cmd_and_av[i + 1], o_flag, 0644);
+		cmd->out_fd = ft_open(cmd->cmd_and_av[i + 1], o_flag, 0644);
 		trim_cmd_argv(cmd, r_o, 2);
 	}
 	else if (ft_strcmp(cmd->cmd_and_av[i], r_a) == 0)
 	{
 		o_flag = O_WRONLY | O_CREAT | O_APPEND;
-		cmd->ft_out_files = ft_open(cmd->cmd_and_av[i + 1], o_flag, 0644);
+		cmd->out_fd = ft_open(cmd->cmd_and_av[i + 1], o_flag, 0644);
 		trim_cmd_argv(cmd, r_a, 2);
 	}
 }
@@ -74,19 +89,20 @@ static void	outfile_open_trim(t_cmd_info *cmd, int i)
 static void	outfile_open(t_cmd_info *cmd)
 {
 	int			i;
-	const char	r_o[2] = {-76, '\0'};
-	const char	r_a[3] = {-76, -76, '\0'};
+	const char	r_o[2] = {-62, '\0'};
+	const char	r_a[3] = {-62, -62, '\0'};
 
 	while (1)
 	{
 		i = -1;
 		while (cmd->cmd_and_av[++i])
-			if (!ft_strcmp(cmd->cmd_and_av[i], r_o) || !ft_strcmp(cmd->cmd_and_av[i], r_a))
+			if (!ft_strcmp(cmd->cmd_and_av[i], r_o) \
+					|| !ft_strcmp(cmd->cmd_and_av[i], r_a))
 				break ;
 		if (cmd->cmd_and_av[i] == NULL)
 			break ;
-		if (cmd->ft_out_files > 0)
-			close(cmd->ft_out_files);
+		if (cmd->out_fd > 0)
+			close(cmd->out_fd);
 		outfile_open_trim(cmd, i);
 	}
 }
@@ -95,12 +111,12 @@ int	io_file_open(t_cmd_info *cmd, t_env_info *info_env)
 {
 	ft_pipe(cmd->fd);
 	infile_open(cmd);
-	if (cmd->ft_in_files == -1)
+	if (cmd->in_fd == -1)
 	{
 		g_exit_signal_code = EXIT_FAILURE;
 		return (-1);
 	}
 	outfile_open(cmd);
-	cmd->ft_command_path = get_cmd_path(cmd, info_env);
+	cmd->command_path = get_cmd_path(cmd, info_env);
 	return (0);
 }

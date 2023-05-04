@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/26 22:25:28 by dmin              #+#    #+#             */
+/*   Updated: 2023/04/27 13:21:50 by hyeonjo          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -10,23 +21,23 @@ static void	redirect_pipe_in(t_cmd_info *cmd)
 
 static void	redirect_pipe_out(t_cmd_info *cmd)
 {
-	if (cmd->ft_pipe_flag == false)
+	if (cmd->pipe_flag == false)
 		return ;
 	return (ft_dup2(cmd->fd[WRITE], STDOUT_FILENO));
 }
 
 static void	redirect_infile(t_cmd_info *cmd)
 {
-	if (cmd->ft_in_files < 0)
+	if (cmd->in_fd < 0)
 		return ;
-	return (ft_dup2(cmd->ft_in_files, STDIN_FILENO));
+	return (ft_dup2(cmd->in_fd, STDIN_FILENO));
 }
 
 static void	redirect_outfile(t_cmd_info *cmd)
 {
-	if (cmd->ft_out_files < 0)
+	if (cmd->out_fd < 0)
 		return ;
-	return (ft_dup2(cmd->ft_out_files, STDOUT_FILENO));
+	return (ft_dup2(cmd->out_fd, STDOUT_FILENO));
 }
 
 void	redirect(t_cmd_info *cmd)

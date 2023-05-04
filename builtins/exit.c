@@ -27,7 +27,11 @@ int	mini_exit(t_cmd_info *cmd, t_env_info *env)
 		while (*(cmd->cmd_and_av[1] + i))
 		{
 			if (!ft_isdigit(*(cmd->cmd_and_av[1] + i)))
-				return (printstderr("exit: %s: numeric argument required\n"));
+			{
+				print_err3("exit", (cmd->cmd_and_av[1] + i), \
+					"numeric argument required");
+				return (1);
+			}
 			i++;
 		}
 		ret = ft_atoi(cmd->cmd_and_av[1]);

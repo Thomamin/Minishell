@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_errno.c                                       :+:      :+:    :+:   */
+/*   handle_error_syscall.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeonjo <hyeonjo@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/27 12:50:20 by hyeonjo           #+#    #+#             */
-/*   Updated: 2023/04/27 12:50:22 by hyeonjo          ###   ########.fr       */
+/*   Created: 2023/04/27 12:55:28 by hyeonjo           #+#    #+#             */
+/*   Updated: 2023/04/27 12:55:31 by hyeonjo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	exit_errno(char *str1, char *str2, int exit_code)
+int	ft_write(int fd, const void *buf, size_t byte)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(str1, STDERR_FILENO);
-	if (str2)
-	{
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(str2, STDERR_FILENO);
-	}
-	ft_putstr_fd("\n", STDERR_FILENO);
-	exit(exit_code);
+	int	ret;
+
+	ret = write(fd, buf, byte);
+	if (ret == -1)
+		exit_errno("write()", strerror(errno), EXIT_FAILURE);
+	return (ret);
+}
+
+void	*ft_malloc(size_t size, size_t n)
+{
+	void	*ret;
+
+	ret = malloc(size * n);
+	if (ret == NULL)
+		exit_errno("malloc()", strerror(errno), EXIT_FAILURE);
+	return (ret);
 }

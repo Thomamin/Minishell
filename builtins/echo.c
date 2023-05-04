@@ -12,19 +12,18 @@
 
 #include "../minishell.h"
 
-int	mini_echo(t_cmd_info *cmd, t_env_info *env)
+static int	is_continuous_n(char *str)
 {
-	int	i;
-	int	print_new_line;
-
-	(void) env;
-	i = 1;
-	print_new_line = 1;
-	if (cmd->cmd_and_av[1] != NULL && !ft_strncmp(cmd->cmd_and_av[1], "-n", 2))
+	while (*(++str))
 	{
-		print_new_line = 0;
-		i++;
+		if (*str != 'n')
+			return (0);
 	}
+	return (1);
+}
+
+static void	mini_echo_prt(t_cmd_info *cmd, int i, int print_new_line)
+{
 	while (cmd->cmd_and_av[i])
 	{
 		printf("%s", cmd->cmd_and_av[i]);
@@ -34,7 +33,34 @@ int	mini_echo(t_cmd_info *cmd, t_env_info *env)
 	}
 	if (print_new_line)
 		printf("\n");
+	return ;
+}
+
+int	mini_echo(t_cmd_info *cmd, t_env_info *env)
+{
+	int	i;
+	int	print_new_line;
+
+	(void) env;
+	i = 1;
+	print_new_line = 1;
+	if (cmd->cmd_and_av[1] != NULL || (ft_strlen(cmd->cmd_and_av[1]) > 1 \
+	&& !ft_strncmp(cmd->cmd_and_av[1], "-n", 2)))
+	{
+		if (ft_strlen(cmd->cmd_and_av[1]) > 2)
+		{
+			if (is_continuous_n(cmd->cmd_and_av[1]))
+			{
+				print_new_line = 0;
+				i++;
+			}
+		}
+		else
+		{
+			print_new_line = 0;
+			i++;
+		}
+	}
+	mini_echo_prt(cmd, i, print_new_line);
 	return (0);
 }
-//리다이렉션 처리.
-//환경변수
