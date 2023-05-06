@@ -6,7 +6,7 @@
 /*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 22:25:25 by dmin              #+#    #+#             */
-/*   Updated: 2023/04/26 22:25:51 by dmin             ###   ########.fr       */
+/*   Updated: 2023/05/03 16:59:44 by hyeonjo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static void	free_path(char **path)
 
 	i = 0;
 	while (path[i])
-		free (path[i++]);
-	free (path);
+		free(path[i++]);
+	free(path);
 }
 
 static char	*get_absolute_path(t_cmd_info *cmd, char *path_env)

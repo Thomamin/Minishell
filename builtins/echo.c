@@ -6,7 +6,7 @@
 /*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:29:02 by dmin              #+#    #+#             */
-/*   Updated: 2023/04/18 14:29:07 by dmin             ###   ########.fr       */
+/*   Updated: 2023/05/03 15:29:19 by hyeonjo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	mini_echo(t_cmd_info *cmd, t_env_info *env)
 	(void) env;
 	i = 1;
 	print_new_line = 1;
-	if (cmd->cmd_and_av[1] != NULL || (ft_strlen(cmd->cmd_and_av[1]) > 1 \
+	if ((ft_strlen(cmd->cmd_and_av[1]) > 1 \
 	&& !ft_strncmp(cmd->cmd_and_av[1], "-n", 2)))
 	{
 		if (ft_strlen(cmd->cmd_and_av[1]) > 2)

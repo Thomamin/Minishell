@@ -38,61 +38,64 @@ static int	change_dir(char *path, t_env_info *env)
 	return (ret);
 }
 
+static int	check_path(char *path, char *msg)
+{
+	if (!path)
+	{
+		print_err2("cd", msg);
+		return (1);
+	}
+	return (0);
+}
+
 static int	cd_home_and_oldpwd(t_env_info *env, char **path)
 {
 	char	*home_path;
 	char	*tmp;
 
+	tmp = *path;
 	if (!ft_strncmp(*path, "-", ft_strlen(*path)))
 	{
-		*path = ft_getenv(env, "OLDPWD");
-		if (!(*path))
-		{
-			print_err2("cd", "OLDPWD not set");
+		*path = ft_strdup(ft_getenv(env, "OLDPWD"));
+		if (check_path(*path, "OLDPWD not set"))
 			return (1);
-		}
 		printf("%s\n", *path);
 	}
 	else if (!ft_strncmp(*path, "~", 1))
 	{
 		home_path = ft_getenv(env, "HOME");
-		if (!(*path))
-		{
-			print_err2("cd", "HOME not set");
+		if (check_path(home_path, "HOME not set"))
 			return (1);
-		}
-		tmp = ft_strjoin(home_path, *path + 1);
-		*path = tmp;
-		free(tmp);
+		*path = ft_strjoin(home_path, *path + 1);
 	}
+	free(tmp);
 	return (0);
 }
 
-static int	set_mini_cd_path(t_env_info *env, char *path)
+static int	set_mini_cd_path(t_env_info *env, char *input)
 {
 	char	buf[4096];
 	char	*tmp_str;
+	char	*path;
 	int		ret;
 
 	ret = 0;
-	if ((!ft_strncmp(path, "~", 1) \
-		|| !ft_strncmp(path, "-", ft_strlen(path)))
+	path = ft_strdup(input);
+	if ((!ft_strncmp(path, "~", 1) || !ft_strcmp(path, "-"))
 		&& (cd_home_and_oldpwd(env, &path) == 1))
 			ret = 1;
-	else
+	else if (*path != '/')
 	{
-		if (*path != '/')
-		{
-			getcwd(buf, 4096);
-			tmp_str = ft_strjoin(buf, "/");
-			path = ft_strjoin(tmp_str, path);
-			free(tmp_str);
-			ret = change_dir(path, env);
-			free(path);
-		}
-		else
-			ret = change_dir(path, env);
+		getcwd(buf, 4096);
+		tmp_str = ft_strjoin(buf, "/");
+		free(path);
+		path = ft_strjoin(tmp_str, input);
+		free(tmp_str);
+		ret = change_dir(path, env);
 	}
+	else
+		ret = change_dir(path, env);
+	free(path);
 	return (ret);
 }
 

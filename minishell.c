@@ -6,7 +6,7 @@
 /*   By: hyeonjo <hyeonjo@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 21:09:42 by hyeonjo           #+#    #+#             */
-/*   Updated: 2023/05/03 14:59:50 by hyeonjo          ###   ########.fr       */
+/*   Updated: 2023/05/03 18:05:11 by hyeonjo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ int	main(int argc, char **argv, char **envp)
 
 	tcgetattr(STDIN_FILENO, &term_sig);
 	initialize_tcs(argc, argv);
+	info_env.env_key = NULL;
+	info_env.env_val = NULL;
+	info_env.next = NULL;
+	info_env.prev = NULL;
 	initialize_env(&info_env, envp);
 	readline_loop(&info_env);
 	wrap_up_env_list(&info_env);

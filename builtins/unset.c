@@ -6,7 +6,7 @@
 /*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:30:30 by dmin              #+#    #+#             */
-/*   Updated: 2023/04/29 20:09:49 by dmin             ###   ########.fr       */
+/*   Updated: 2023/05/06 14:33:38 by hyeonjo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,13 @@ static void	del_env_node(t_env_info *env_node)
 		}
 		else
 		{
-			if (env_node->next)
+			if (env_node->next && env_node->next->env_key)
 			{
-				free(env_node->env_key);
+				if (env_node->env_key)
+					free(env_node->env_key);
+				if (env_node->env_val)
+					free(env_node->env_val);
 				env_node->env_key = ft_strdup(env_node->next->env_key);
-				free(env_node->env_val);
 				env_node->env_val = ft_strdup(env_node->next->env_val);
 				del_env_node(env_node->next);
 			}

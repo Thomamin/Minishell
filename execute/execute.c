@@ -6,7 +6,7 @@
 /*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 22:25:07 by dmin              #+#    #+#             */
-/*   Updated: 2023/05/03 13:35:17 by hyeonjo          ###   ########.fr       */
+/*   Updated: 2023/05/03 17:03:19 by hyeonjo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	do_fork_cmd(t_cmd_info *cmd, t_env_info *info_env)
 		redirect(cmd);
 		close_unused_fd(cmd, pid);
 		exit_code = execute_cmd(cmd, info_env);
-		exit (exit_code);
+		exit(exit_code);
 	}
 	else
 	{

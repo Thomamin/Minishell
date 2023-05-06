@@ -6,7 +6,7 @@
 /*   By: dmin <dmin@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 22:25:23 by dmin              #+#    #+#             */
-/*   Updated: 2023/04/27 13:10:57 by hyeonjo          ###   ########.fr       */
+/*   Updated: 2023/05/06 18:27:36 by hyeonjo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static void	infile_open(t_cmd_info *cmd)
 			print_err3(cmd->cmd_and_av[i + 1], NULL, \
 					"No such file or directory");
 			close(cmd->fd[1]);
+			cmd->fd[1] = -2;
 		}
 		trim_cmd_argv(cmd, redir_in, 2);
 	}
